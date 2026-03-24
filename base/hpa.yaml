@@ -1,0 +1,41 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: payment-service-hpa
+  namespace: payment-service
+  labels:
+    app.kubernetes.io/name: payment-microservice
+    app.kubernetes.io/component: autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: payment-service
+  minReplicas: 2 # Menjaga ketersediaan tinggi untuk transaksi pembayaran
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70 # Skala naik jika rata-rata CPU > 70%
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80 # Skala naik jika rata-rata RAM > 80%
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 30 # Bereaksi cepat terhadap lonjakan transaksi
+      policies:
+        - type: Pods
+          value: 2 # Tambah maksimal 2 pod per event
+          periodSeconds: 30
+    scaleDown:
+      stabilizationWindowSeconds: 300 # Tunggu 5 menit sebelum scale down (mencegah flapping)
+      policies:
+        - type: Pods
+          value: 1 # Hapus maksimal 1 pod per menit
+          periodSeconds: 60

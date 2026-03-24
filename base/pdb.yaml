@@ -1,0 +1,13 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: payment-service-pdb
+  namespace: payment-service
+  labels:
+    app.kubernetes.io/name: payment-microservice
+    app.kubernetes.io/component: pdb
+spec:
+  minAvailable: 1 # Setidaknya 1 pod harus tetap jalan saat terjadi gangguan (disruption)
+  selector:
+    matchLabels:
+      app: payment-service # Harus cocok dengan label 'app' di Deployment payment
