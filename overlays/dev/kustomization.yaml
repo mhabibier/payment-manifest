@@ -1,41 +1,35 @@
 # k8s/overlays/development/kustomization.yaml
-# Development overlay for self-hosted kubeadm cluster.
-#
-# Differences from base:
-#   - 1 replica (save resources on dev cluster)
-#   - Smaller CPU/memory limits
-#   - Image tag: dev (or a short git SHA)
-#   - NODE_ENV: development (more verbose logs)
+# Development overlay for payment-service.
 
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: auth-service
+# Namespace target untuk environment development
+namespace: payment-service
 
 resources:
   - ../../base
 
-# ── Image: point to your private registry with a dev tag ─────────────────────
-# Change registry.yourdomain.com to your actual private registry hostname
+# ── Image: Menggunakan tag dev ───────────────────────────────────────────────
 images:
-  - name:    registry.yourdomain.com/auth-microservice
-    newTag:  dev
+  - name: registry.yourdomain.com/payment-microservice
+    newTag: dev
 
 # ── Patches ───────────────────────────────────────────────────────────────────
 patches:
-  # Reduce replicas and resources for development
+  # Patch Deployment: Mengurangi replika dan resource limits untuk dev
   - patch: |-
       apiVersion: apps/v1
       kind: Deployment
       metadata:
-        name: auth-service
-        namespace: auth-service
+        name: payment-service
+        namespace: payment-service
       spec:
         replicas: 1
         template:
           spec:
             containers:
-              - name: auth-service
+              - name: payment-service
                 resources:
                   requests:
                     cpu:    "50m"
@@ -44,21 +38,21 @@ patches:
                     cpu:    "200m"
                     memory: "256Mi"
 
-  # Relax HPA to allow scaling down to 1 in dev
+  # Patch HPA: Melonggarkan batasan scaling untuk dev
   - patch: |-
       apiVersion: autoscaling/v2
       kind: HorizontalPodAutoscaler
       metadata:
-        name: auth-service-hpa
-        namespace: auth-service
+        name: payment-service-hpa
+        namespace: payment-service
       spec:
         minReplicas: 1
         maxReplicas: 3
 
 # ── Dev-specific config overrides ─────────────────────────────────────────────
 configMapGenerator:
-  - name: auth-service-config
-    namespace: auth-service
+  - name: payment-service-config
+    namespace: payment-service
     behavior: merge
     literals:
       - NODE_ENV=development
