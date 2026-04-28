@@ -52,7 +52,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
       containers:
         - name: payment-service
-          image: registry.yourdomain.com/payment-microservice:1.0.0
+          image: harbor.sxdentrypoint.my.id/devsecops/payment-svc:v1
           imagePullPolicy: Always
           ports:
             - name: http

@@ -4,7 +4,7 @@ metadata:
   name: payment-service
   namespace: payment-service
   labels:
-    app.kubernetes.io/name: payment-microservice
+    app.kubernetes.io/name: payment-service
     app.kubernetes.io/component: server
 spec:
   type: ClusterIP
@@ -15,3 +15,24 @@ spec:
       port: 80 # Port internal cluster (misal: http://payment-service)
       targetPort: http # Merujuk ke named port 'http' (port 3000) di pod
       protocol: TCP
+
+#---
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: payment-service-np
+#   namespace: payment-service
+#   labels:
+#     app.kubernetes.io/name: payment-service
+#     app.kubernetes.io/component: server-nodeport
+# spec:
+#   type: NodePort
+#   selector:
+#     app: payment-service # Harus cocok dengan label 'app' di Deployment payment
+#   ports:
+#     - name: http
+#       port: 80 # Port internal cluster (misal: http://payment-service-np)
+#       targetPort: http # Merujuk ke named port 'http' (port 3000) di pod
+#       protocol: TCP
+#       nodePort: 30081 # Port NodePort (30000-32767)
