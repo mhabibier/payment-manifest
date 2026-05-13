@@ -39,17 +39,7 @@ spec:
           type: RuntimeDefault
       terminationGracePeriodSeconds: 30
       imagePullSecrets:
-        - name: registry-credentials
-      affinity:
-        podAntiAffinity:
-          # Menyebarkan pod di node yang berbeda agar high availability
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app: payment-service
-                topologyKey: kubernetes.io/hostname
+        - name: harbor-secret
       containers:
         - name: payment-service
           image: harbor.sxdentrypoint.my.id/devsecops/payment-svc:v1
