@@ -1,0 +1,6 @@
+projectKey=payment-service
+serverUrl=https://sonar.sxdentrypoint.my.id
+serverVersion=10.3.0.82913
+dashboardUrl=https://sonar.sxdentrypoint.my.id/dashboard?id=payment-service
+ceTaskId=AZ4iU8Rc8t7cQ3cge7fX
+ceTaskUrl=https://sonar.sxdentrypoint.my.id/api/ce/task?id=AZ4iU8Rc8t7cQ3cge7fX

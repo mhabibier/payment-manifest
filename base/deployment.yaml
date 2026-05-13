@@ -42,7 +42,7 @@ spec:
         - name: harbor-secret
       containers:
         - name: payment-service
-          image: harbor.sxdentrypoint.my.id/devsecops/payment-svc:v1
+          image: harbor.sxdentrypoint.my.id/devsecops/payment-svc:71f3c6f1
           imagePullPolicy: Always
           ports:
             - name: http
