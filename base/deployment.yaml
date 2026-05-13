@@ -69,7 +69,11 @@ spec:
                 secretKeyRef:
                   name: payment-service-secret
                   key: JWT_SECRET
-            # Tambahkan env khusus payment di sini jika ada (seperti API Keys)
+            - name: ORDER_SERVICE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: payment-service-secret
+                  key: ORDER_SERVICE_URL
           startupProbe:
             httpGet:
               path: /health
@@ -105,6 +109,10 @@ spec:
           volumeMounts:
             - name: tmp
               mountPath: /tmp
+            - name: prisma-client
+              mountPath: /app/node_modules/.prisma/client
       volumes:
         - name: tmp
+          emptyDir: {}
+        - name: prisma-client
           emptyDir: {}
