@@ -74,6 +74,11 @@ spec:
                 secretKeyRef:
                   name: payment-service-secret
                   key: ORDER_SERVICE_URL
+            - name: INTERNAL_SERVICE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: payment-service-secret
+                  key: INTERNAL_SERVICE_SECRET
           startupProbe:
             httpGet:
               path: /health
